@@ -1,6 +1,7 @@
 from fastapi import APIRouter, HTTPException, Depends
 from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import IntegrityError
 from utilities.database import get_db
 from routes.services import (
     get_data,
@@ -17,10 +18,15 @@ router = APIRouter()
 
 @router.post("/insert")
 def insert_data(db: Session = Depends(get_db)):
+    data = get_data()
     try:
-        data = get_data()
         insert_data_into_db(data, db)
         return JSONResponse(status_code=200, content="Data inserted successfully")
+    except IntegrityError:
+        db.rollback()
+        return JSONResponse(
+            status_code=200, content="Duplicate entries found, insertion continued."
+        )
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
