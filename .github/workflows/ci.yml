@@ -53,5 +53,5 @@ jobs:
     - name: Run tests
       run: |
         docker-compose up -d
-        docker-compose exec server pytest -v
+        docker-compose exec -T server pytest -v
         docker-compose down
