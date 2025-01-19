@@ -13,6 +13,11 @@ def test_read_main():
     assert response.json() == "Server Loaded Successfully"
 
 
+def test_insert_data():
+    response = client.post("/data/insert")
+    assert response.status_code == 200
+
+
 def test_visualise_sma():
     response = client.post(
         "/data/visualise_sma?short_window=5&long_window=10&forecast_steps=3"

@@ -1,5 +1,5 @@
 import uuid
-from sqlalchemy import Column, String, BigInteger, Float, DateTime
+from sqlalchemy import Column, String, BigInteger, Float, DateTime, UniqueConstraint
 from sqlalchemy.dialects.postgresql import UUID
 from utilities.database import Base
 
@@ -14,3 +14,6 @@ class Data(Base):
     open = Column(Float, nullable=False)
     volume = Column(BigInteger, nullable=False)
     instrument = Column(String, nullable=False)
+    __table_args__ = (
+        UniqueConstraint("datetime", "instrument", name="uq_datetime_instrument"),
+    )
