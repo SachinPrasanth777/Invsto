@@ -55,4 +55,3 @@ jobs:
         docker-compose up -d
         docker-compose exec server pytest -v
         docker-compose down
-
